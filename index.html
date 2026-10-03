@@ -3,128 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>what's your working style</title>
+<title>how do you actually work</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  /* ---------- tokens ---------- */
-  :root {
-    --sky: #eaf4fb;
-    --mist: #d6e9f6;
-    --haze: #b7d6ec;
-    --blue: #6aa6d1;
-    --deep: #2f5d80;
-    --ink: #1f3a4f;
-    --white: #fbfdff;
-    --serif: "Fraunces", Georgia, "Times New Roman", serif;
-    --sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { min-height: 100%; }
-  body {
-    font-family: var(--sans);
-    color: var(--ink);
-    background: linear-gradient(180deg, var(--sky) 0%, var(--mist) 100%) fixed;
-    line-height: 1.6;
-    text-transform: lowercase;
-    overflow-x: hidden;
-  }
-  button { font: inherit; color: inherit; text-transform: inherit; cursor: pointer; }
-  :focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
-
-  /* ---------- soft background shapes (swap for your own art) ---------- */
-  .cloud {
-    position: fixed; z-index: 0; border-radius: 999px;
-    background: var(--white); opacity: .55; filter: blur(2px);
-    pointer-events: none;
-  }
-  .cloud.c1 { width: 280px; height: 90px; top: 8%; left: -60px; }
-  .cloud.c2 { width: 200px; height: 70px; top: 22%; right: -40px; }
-  .cloud.c3 { width: 340px; height: 100px; bottom: 6%; left: 12%; }
-  @media (prefers-reduced-motion: no-preference) {
-    .cloud.c1 { animation: drift 40s ease-in-out infinite alternate; }
-    .cloud.c3 { animation: drift 55s ease-in-out infinite alternate-reverse; }
-  }
-  @keyframes drift { to { transform: translateX(80px); } }
-
-  /* ---------- layout ---------- */
-  main { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; padding: 48px 22px 80px; }
-  .screen { display: none; }
-  .screen.on { display: block; }
-
-  .logo { display: block; max-width: 120px; margin: 0 auto 18px; }
-  .hero-img { display: block; max-width: 280px; width: 70%; margin: 0 auto 10px; }
-
-  h1, h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
-  h1 { font-size: clamp(2.3rem, 8vw, 3.4rem); line-height: 1.1; text-align: center; }
-  .sub { text-align: center; max-width: 420px; margin: 18px auto 32px; color: var(--deep); }
-
-  .btn {
-    display: block; margin: 0 auto; padding: 14px 34px;
-    background: var(--ink); color: var(--white); border: 0; border-radius: 999px;
-    letter-spacing: .02em; transition: transform .15s, background .15s;
-  }
-  .btn:hover { background: var(--deep); transform: translateY(-2px); }
-  .btn.ghost { background: transparent; color: var(--deep); border: 1.5px solid var(--haze); }
-  .btn.ghost:hover { background: var(--white); }
-
-  .axes-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 auto 36px; max-width: 420px; }
-  .axes-preview span {
-    background: var(--white); border-radius: 14px; padding: 10px 14px;
-    font-size: .9rem; text-align: center; color: var(--deep);
-  }
-
-  /* ---------- quiz ---------- */
-  .top { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
-  .back { background: none; border: 0; color: var(--deep); padding: 4px 8px; }
-  .back[disabled] { opacity: .25; cursor: default; }
-  .bar { flex: 1; height: 8px; background: var(--white); border-radius: 99px; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; background: var(--blue); border-radius: 99px; transition: width .35s ease; }
-  .count { font-size: .85rem; color: var(--deep); min-width: 42px; text-align: right; }
-
-  .q { font-size: clamp(1.45rem, 5vw, 1.9rem); line-height: 1.25; text-align: center; margin-bottom: 30px; }
-  .opts { display: grid; gap: 14px; }
-  .opt {
-    background: var(--white); border: 1.5px solid transparent; border-radius: 20px;
-    padding: 20px 22px; text-align: left; line-height: 1.45;
-    transition: border-color .15s, transform .15s, background .15s;
-  }
-  .opt:hover { border-color: var(--blue); transform: translateY(-2px); }
-  .opt.picked { background: var(--mist); border-color: var(--deep); }
-
-  /* ---------- result ---------- */
-  .type-img { display: block; max-width: 220px; width: 60%; margin: 0 auto 12px; }
-  .code { text-align: center; color: var(--blue); font-family: var(--serif); font-size: 1.1rem; letter-spacing: .3em; }
-  .name { font-size: clamp(2.2rem, 8vw, 3.2rem); text-align: center; line-height: 1.1; margin: 6px 0 8px; }
-  .tag { text-align: center; font-family: var(--serif); font-style: italic; color: var(--deep); margin-bottom: 28px; }
-  .card { background: var(--white); border-radius: 22px; padding: 24px 26px; margin-bottom: 18px; }
-  .card p { max-width: 62ch; }
-  .card h2 { font-size: 1.15rem; margin-bottom: 10px; }
-
-  .meter { margin: 14px 0; }
-  .meter .lbl { display: flex; justify-content: space-between; font-size: .9rem; margin-bottom: 6px; }
-  .meter .lbl b { font-weight: 500; }
-  .meter .track { height: 10px; background: var(--sky); border-radius: 99px; position: relative; overflow: hidden; }
-  .meter .fill { position: absolute; top: 0; bottom: 0; background: var(--blue); border-radius: 99px; }
-
-  .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
-  .actions .btn { margin: 0; }
-  .toast { text-align: center; font-size: .85rem; color: var(--deep); height: 20px; margin-top: 12px; }
-
-  .all-types { margin-top: 44px; }
-  .all-types h2 { text-align: center; font-size: 1.3rem; margin-bottom: 16px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 10px; }
-  .grid a {
-    background: var(--white); border-radius: 14px; padding: 12px; text-align: center;
-    text-decoration: none; color: var(--ink); font-size: .9rem; transition: background .15s;
-  }
-  .grid a:hover { background: var(--mist); }
-  .grid a small { display: block; color: var(--blue); letter-spacing: .2em; font-size: .75rem; }
-
-  /* image slots hide themselves if the file is missing */
-  img[data-asset] { height: auto; }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -132,44 +15,34 @@
 
 <main>
 
-  <!-- start -->
   <section id="start" class="screen on">
-    <!-- your assets: put files in /assets and they show up here -->
-    <img data-asset class="logo" src="assets/logo.png" alt="">
-    <img data-asset class="hero-img" src="assets/hero.png" alt="">
-    <h1>how do you<br>actually work</h1>
-    <p class="sub">twelve quick questions, four traits, sixteen types. no right answers, just go with your gut.</p>
-    <div class="axes-preview">
-      <span>visionary / data-driven</span>
-      <span>builder / planner</span>
-      <span>risk-taker / calculator</span>
-      <span>independent / social</span>
-    </div>
+    <img data-asset id="logo" class="logo" alt="">
+    <img data-asset id="hero" class="hero-img" alt="">
+    <h1 id="title"></h1>
+    <p class="sub" id="intro"></p>
+    <div class="axes-preview" id="axes-preview"></div>
     <button class="btn" id="go">start</button>
+    <button class="btn ghost" id="last" hidden>see your last result</button>
   </section>
 
-  <!-- quiz -->
   <section id="quiz" class="screen">
     <div class="top">
       <button class="back" id="back" aria-label="previous question">back</button>
       <div class="bar"><i id="fill"></i></div>
-      <span class="count" id="count">1/12</span>
+      <span class="count" id="count"></span>
     </div>
     <h2 class="q" id="qtext"></h2>
     <div class="opts" id="opts"></div>
   </section>
 
-  <!-- result -->
   <section id="result" class="screen">
-    <img data-asset class="type-img" id="typeimg" alt="">
+    <img data-asset id="typeimg" class="type-img" alt="">
     <p class="code" id="code"></p>
     <h1 class="name" id="name"></h1>
     <p class="tag" id="tag"></p>
 
-    <div class="card"><h2>the short version</h2><p id="blurb"></p></div>
-    <div class="card"><h2>at your best</h2><p id="best"></p></div>
-    <div class="card"><h2>watch out for</h2><p id="watch"></p></div>
-    <div class="card"><h2>your split</h2><div id="meters"></div></div>
+    <div id="sections"></div>
+    <div class="card" id="meters-card"><h2>your split</h2><div id="meters"></div></div>
 
     <div class="actions">
       <button class="btn" id="copy">copy link to result</button>
@@ -185,260 +58,16 @@
 
 </main>
 
-<script>
-/* =========================================================
-   edit everything below to change the content.
-   axes: each one has two letters. a question's "a" answer
-   points to the first letter, "b" to the second.
-   code order: V/D  B/P  R/C  I/S
-   ========================================================= */
-
-const AXES = [
-  { pair: ["V", "D"], names: ["visionary", "data-driven"] },
-  { pair: ["B", "P"], names: ["builder", "planner"] },
-  { pair: ["R", "C"], names: ["risk-taker", "calculator"] },
-  { pair: ["I", "S"], names: ["independent", "social"] }
-];
-
-/* axis = index in AXES. "first" = which letter the first option scores. */
-const QUESTIONS = [
-  { axis: 0, text: "you're handed a blank page and a free week. you start with...",
-    a: "a wild idea of what it could become", b: "research on what's already working", first: "a" },
-  { axis: 2, text: "a big opportunity shows up with a short deadline. you...",
-    a: "say yes and figure out the rest on the way", b: "ask for time to weigh the downsides", first: "a" },
-  { axis: 1, text: "a new project kicks off. your first move is to...",
-    a: "make something rough so there's something real to look at", b: "map out the steps before touching anything", first: "a" },
-  { axis: 3, text: "you're stuck on a hard problem. you would rather...",
-    a: "go off alone and think it through", b: "grab someone and talk it out", first: "a" },
-
-  { axis: 0, text: "when you're deciding between two options, what wins?",
-    a: "the numbers, even if the other one feels better", b: "the one that feels like it points somewhere bigger", first: "b" },
-  { axis: 1, text: "your ideal workspace right now is...",
-    a: "a calendar, a checklist, and a clear order of things", b: "a messy desk with half-finished experiments", first: "a" },
-  { axis: 2, text: "the safe path and the long shot are both open. you pick...",
-    a: "the path where you know what could go wrong", b: "the long shot, because the upside is worth it", first: "a" },
-  { axis: 3, text: "the best kind of work day is one where you...",
-    a: "barely talk to anyone and get a lot done", b: "bounce between people and ideas all day", first: "b" },
-
-  { axis: 0, text: "people usually come to you for...",
-    a: "a fresh angle nobody else saw", b: "the facts and the evidence behind it", first: "a" },
-  { axis: 1, text: "halfway through, the plan stops working. you...",
-    a: "keep a backup plan ready from the start, so you switch", b: "tear it up and build something that does work", first: "b" },
-  { axis: 2, text: "you've got savings and a risky idea. you...",
-    a: "put a chunk in and see what happens", b: "test it small first and scale only if it holds up", first: "a" },
-  { axis: 3, text: "when something goes well, you most want to...",
-    a: "celebrate with the people who helped", b: "enjoy it quietly and move to the next thing", first: "b" }
-];
-
-/* 16 types. key = the four letters. */
-const TYPES = {
-  VBRI: { name: "the prototype", tag: "makes the strange thing real, alone, at 2am.",
-    blurb: "you have an idea, you build a rough version of it right away, and you ship before it feels ready. you trust your own judgment and mostly want to be left alone to make it.",
-    best: "fast, original, and not scared of looking silly. you turn vague ideas into something people can touch.",
-    watch: "you can skip the feedback that would make it better, and leave a trail of half-finished projects." },
-  VBRS: { name: "the ringleader", tag: "pulls a crowd into the idea and gets going.",
-    blurb: "you see where things could go, start building, and bring everyone along for the ride. momentum is your favorite thing.",
-    best: "contagious energy. people join your projects because you make them feel like something is happening.",
-    watch: "enthusiasm can cover for gaps in the plan. check that the team actually knows what they signed up for." },
-  VBCI: { name: "the tinkerer", tag: "small bets, big imagination, no audience needed.",
-    blurb: "you build to explore, but you do it carefully. you try an idea in a corner of your life before you commit the rest of it.",
-    best: "inventive without being reckless. you find strange solutions and test them before they cost much.",
-    watch: "testing can turn into endless tinkering. pick a point where the experiment becomes the real thing." },
-  VBCS: { name: "the workshop host", tag: "builds things with people, one careful step at a time.",
-    blurb: "you like making things in good company. you steer the group toward ideas that are exciting but safe enough to try.",
-    best: "you make it easy for others to contribute, and you keep the wild ideas grounded.",
-    watch: "you might wait for consensus when someone just needs to make the call." },
-  VPRI: { name: "the long shot", tag: "has a plan nobody else believes in yet.",
-    blurb: "you carry a big picture, plan the route to it, and take the leap without needing permission. you'd rather be early and alone than on time and crowded.",
-    best: "conviction and follow-through. you can hold a vision for a long time and still work out the steps.",
-    watch: "being sure can make you hard to advise. ask one person who disagrees with you." },
-  VPRS: { name: "the pitch", tag: "paints the picture, then makes the room want in.",
-    blurb: "you plan big, bet big, and talk people into the future you see. you work best when you can say it out loud to someone.",
-    best: "persuasive and organized. you get buy-in and you have a roadmap to back it up.",
-    watch: "the story can run ahead of the evidence. leave room for someone to poke holes." },
-  VPCI: { name: "the cartographer", tag: "draws the whole map before taking a step.",
-    blurb: "you think long term, plan carefully, and weigh the risks quietly on your own. when you finally move, it's usually well-aimed.",
-    best: "foresight. you spot problems early and design around them.",
-    watch: "the map is not the territory. at some point you have to walk it." },
-  VPCS: { name: "the compass", tag: "keeps the group pointed somewhere good.",
-    blurb: "you want a future worth working toward and a plan that keeps everyone safe on the way there. people look to you for direction.",
-    best: "steady and thoughtful. you balance ambition with care for the people involved.",
-    watch: "being the calm one can mean you hold back your own bold ideas." },
-
-  DBRI: { name: "the experimenter", tag: "runs the test, reads the result, goes again.",
-    blurb: "you build quickly, let the data tell you whether it worked, and take real risks because you trust your measuring. mostly you do this by yourself.",
-    best: "quick learning loops. you're comfortable being wrong in public because you'll know why.",
-    watch: "not everything worth doing shows up in a metric. sometimes the number is late." },
-  DBRS: { name: "the operator", tag: "gets the team moving and checks the dashboard.",
-    blurb: "you like clear numbers, fast action, and a team that's in the room with you. you'd rather try it than discuss it.",
-    best: "decisive and grounded. you turn goals into action and keep track of what's working.",
-    watch: "speed can outrun people. check in on how the team is actually doing." },
-  DBCI: { name: "the mechanic", tag: "quietly fixes what's actually broken.",
-    blurb: "you dig into how things work, build the fix, and double check it. you'd rather deliver something solid than something flashy.",
-    best: "reliable, precise, and hard to rattle. your work holds up.",
-    watch: "you might not mention what you've done. let people see it." },
-  DBCS: { name: "the foreman", tag: "keeps the crew safe and the work on track.",
-    blurb: "you like building things with a team, using evidence, and avoiding avoidable mistakes. people trust you with the important parts.",
-    best: "dependable and fair. you make the whole group's work better.",
-    watch: "caution can turn into saying no too often. save some room for the unproven idea." },
-  DPRI: { name: "the sharp", tag: "does the math, then makes the unpopular move.",
-    blurb: "you plan with data and then commit hard when the numbers say go, even if nobody else sees it yet. you decide on your own.",
-    best: "clear-eyed and brave. you take risks that are actually calculated.",
-    watch: "you can be right and still need to bring people with you." },
-  DPRS: { name: "the dealmaker", tag: "reads the room and the spreadsheet.",
-    blurb: "you plan thoroughly, you're not afraid to move big, and you work well with people while you do it. negotiating comes naturally.",
-    best: "strategic and personable. you see both the numbers and the people behind them.",
-    watch: "winning every round isn't the point. leave something on the table sometimes." },
-  DPCI: { name: "the ledger", tag: "knows exactly where everything stands.",
-    blurb: "you plan with care, check the evidence twice, and prefer to think it through on your own. very little surprises you.",
-    best: "thorough, accurate, and calm under pressure. you catch what others miss.",
-    watch: "perfect information doesn't exist. make the call at ninety percent." },
-  DPCS: { name: "the anchor", tag: "the reason the whole thing doesn't drift away.",
-    blurb: "you like clear plans, solid evidence, and a team you can count on. you make things steady, and people feel it.",
-    best: "grounded and generous. you make good decisions that last.",
-    watch: "stability is great until it becomes the only goal. try one new thing a year." }
-};
-
-/* ---------- state ---------- */
-const $ = (id) => document.getElementById(id);
-let current = 0;
-let answers = new Array(QUESTIONS.length).fill(null); // "a" or "b"
-
-/* updates the url hash for sharing; silently skipped where the browser blocks it (e.g. sandboxed previews) */
-function setHash(h) {
-  try { history.replaceState(null, "", h ? "#" + h : location.pathname); } catch (e) {}
-}
-
-function show(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
-  $(id).classList.add("on");
-  window.scrollTo({ top: 0 });
-}
-
-/* hide any asset slot whose file isn't there yet */
-document.querySelectorAll("img[data-asset]").forEach(img => {
-  img.addEventListener("error", () => { img.style.display = "none"; });
-});
-
-/* ---------- quiz flow ---------- */
-function renderQuestion() {
-  const q = QUESTIONS[current];
-  $("qtext").textContent = q.text;
-  $("count").textContent = (current + 1) + "/" + QUESTIONS.length;
-  $("fill").style.width = (current / QUESTIONS.length * 100) + "%";
-  $("back").disabled = current === 0;
-
-  const opts = $("opts");
-  opts.innerHTML = "";
-  ["a", "b"].forEach(k => {
-    const b = document.createElement("button");
-    b.className = "opt" + (answers[current] === k ? " picked" : "");
-    b.textContent = q[k];
-    b.onclick = () => choose(k);
-    opts.appendChild(b);
-  });
-}
-
-function choose(k) {
-  answers[current] = k;
-  if (current < QUESTIONS.length - 1) {
-    current++;
-    renderQuestion();
-  } else {
-    $("fill").style.width = "100%";
-    finish();
-  }
-}
-
-function score() {
-  // tally[axis] = [count for first letter, count for second letter]
-  const tally = AXES.map(() => [0, 0]);
-  QUESTIONS.forEach((q, i) => {
-    const picked = answers[i];
-    // if first = "a", picking "a" scores the axis' first letter; otherwise flipped
-    const scoresFirst = (picked === q.first);
-    tally[q.axis][scoresFirst ? 0 : 1]++;
-  });
-  return tally;
-}
-
-function finish() {
-  const tally = score();
-  const code = tally.map((t, i) => AXES[i].pair[t[0] >= 2 ? 0 : 1]).join("");
-  setHash(code);
-  showResult(code, tally);
-}
-
-function showResult(code, tally) {
-  const t = TYPES[code];
-  if (!t) { show("start"); return; }
-  $("code").textContent = code.split("").join(" ");
-  $("name").textContent = t.name;
-  $("tag").textContent = t.tag;
-  $("blurb").textContent = t.blurb;
-  $("best").textContent = t.best;
-  $("watch").textContent = t.watch;
-
-  const img = $("typeimg");
-  img.style.display = "";
-  img.src = "assets/types/" + code.toLowerCase() + ".png";
-
-  const m = $("meters");
-  m.innerHTML = "";
-  AXES.forEach((ax, i) => {
-    const leaning = code[i] === ax.pair[0] ? 0 : 1;
-    const row = document.createElement("div");
-    row.className = "meter";
-    let detail;
-    if (tally) {
-      const n = tally[i][leaning];
-      detail = n + " of 3";
-      const pct = n / 3 * 100;
-      row.innerHTML =
-        '<div class="lbl"><b>' + ax.names[leaning] + '</b><span>' + detail + '</span></div>' +
-        '<div class="track"><div class="fill" style="' +
-        (leaning === 0 ? "left:0;" : "right:0;") + 'width:' + pct + '%"></div></div>' +
-        '<div class="lbl" style="margin-top:4px;opacity:.6"><span>' + ax.names[0] + '</span><span>' + ax.names[1] + '</span></div>';
-    } else {
-      row.innerHTML = '<div class="lbl"><b>' + ax.names[leaning] + '</b><span>' + ax.names[0] + ' / ' + ax.names[1] + '</span></div>';
-    }
-    m.appendChild(row);
-  });
-
-  show("result");
-}
-
-function buildGrid() {
-  const g = $("grid");
-  g.innerHTML = "";
-  Object.keys(TYPES).forEach(code => {
-    const a = document.createElement("a");
-    a.href = "#" + code;
-    a.innerHTML = "<small>" + code + "</small>" + TYPES[code].name;
-    a.onclick = (e) => { e.preventDefault(); setHash(code); showResult(code, null); };
-    g.appendChild(a);
-  });
-}
-
-/* ---------- wiring ---------- */
-$("go").onclick = () => { current = 0; answers.fill(null); show("quiz"); renderQuestion(); };
-$("back").onclick = () => { if (current > 0) { current--; renderQuestion(); } };
-$("retake").onclick = () => { setHash(""); current = 0; answers.fill(null); show("start"); };
-$("copy").onclick = async () => {
-  try {
-    await navigator.clipboard.writeText(location.href);
-    $("toast").textContent = "link copied";
-  } catch (e) {
-    $("toast").textContent = "copy it from the address bar";
-  }
-  setTimeout(() => { $("toast").textContent = ""; }, 2500);
-};
-
-buildGrid();
-
-/* open a shared result link directly, e.g. yoursite.github.io/#VBRI */
-const hash = location.hash.replace("#", "").toUpperCase();
-if (TYPES[hash]) showResult(hash, null);
-</script>
+<!-- load order matters: config + data first, then logic, then ui, then app -->
+<script src="js/config.js"></script>
+<script src="js/data/axes.js"></script>
+<script src="js/data/questions.js"></script>
+<script src="js/data/types.js"></script>
+<script src="js/validate.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/router.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
